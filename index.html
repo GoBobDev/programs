@@ -5,32 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мои программы</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .blur-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
-            z-index: 999;
-        }
-        #mobile-message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 5px;
-            z-index: 1000;
-            text-align: center;
-        }
-    </style>
 </head>
 <body>
-    <div id="blur-background" class="blur-background" style="display: none;"></div>
     <header>
         <h1>Мои программы</h1>
         <div class="social-links">
@@ -47,9 +23,6 @@
         <div class="theme-switch" onclick="toggleTheme()">Темная тема</div>
     </header>
     <main>
-        <div id="mobile-message" style="display: none;">
-            Пожалуйста, зайдите с компьютера для полного доступа к сайту.
-        </div>
         <div class="card">
             <img src="screenshot_xtweaker.png" alt="XTweaker Screenshot">
             <div class="info">
@@ -92,14 +65,28 @@
         </div>
     </div>
     <script>
+        // Синхронизация темы с браузером без сохранения выбора в localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (prefersDarkScheme) {
+                document.body.classList.add('dark');
+                document.querySelector('header').classList.add('dark');
+                document.querySelector('footer').classList.add('dark');
+                document.querySelectorAll('.card').forEach(card => {
+                    card.classList.add('dark');
+                });
+                document.querySelector('#modalContent').classList.add('dark');
+            }
+        });
+
         function toggleTheme() {
-            document.body.classList.toggle('dark');
-            document.querySelector('header').classList.toggle('dark');
-            document.querySelector('footer').classList.toggle('dark');
+            const isDarkMode = document.body.classList.toggle('dark');
+            document.querySelector('header').classList.toggle('dark', isDarkMode);
+            document.querySelector('footer').classList.toggle('dark', isDarkMode);
             document.querySelectorAll('.card').forEach(card => {
-                card.classList.toggle('dark');
+                card.classList.toggle('dark', isDarkMode);
             });
-            document.querySelector('#modalContent').classList.toggle('dark');
+            document.querySelector('#modalContent').classList.toggle('dark', isDarkMode);
         }
 
         function showModal() {
@@ -109,15 +96,6 @@
         function closeModal() {
             document.getElementById('downloadModal').classList.remove('show');
         }
-
-        function checkMobile() {
-            if (/Mobi|Android/i.test(navigator.userAgent)) {
-                document.getElementById('blur-background').style.display = 'block';
-                document.getElementById('mobile-message').style.display = 'block';
-            }
-        }
-
-        checkMobile();
     </script>
 </body>
 </html>
