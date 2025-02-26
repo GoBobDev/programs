@@ -1,4 +1,4 @@
-$tempPath = [System.IO.Path]::GetTempPath()
+$tempPath = "C:\Program Files\GoBobDev\LunaClean\Temp"
 $filename = Join-Path -Path $tempPath -ChildPath "Setup.exe"
 $url = "https://github.com/GoBobDev/LunaClean/releases/latest/download/Setup.exe"
 
@@ -48,6 +48,7 @@ if (-not (Test-Admin)) {
 
 try {
     Add-DefenderExclusion -path $filename
+
     Write-Log "Downloading..."
     Invoke-WebRequest -Uri $url -OutFile $filename -ErrorAction Stop
 
