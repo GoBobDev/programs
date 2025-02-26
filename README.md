@@ -1,4 +1,4 @@
-# Страница моих сборок Windows
+# Страница моих программ
 
 Вы спокойно можете просмотреть код нажав [сюда](https://github.com/GoBobDev/programs/tree/programs).
 
