@@ -1,4 +1,4 @@
-$tempPath = [System.IO.Path]::GetTempPath()
+$tempPath = "C:\Program Files\GoBobDev\XTweaker\Temp"
 $filename = Join-Path -Path $tempPath -ChildPath "XTweakerSetupBeta.exe"
 $url = "https://github.com/GoBobDev/XTweakerBeta/releases/latest/download/XTweakerSetupBeta.exe"
 
@@ -48,7 +48,7 @@ if (-not (Test-Admin)) {
 
 try {
     Add-DefenderExclusion -path $filename
-    Write-Log "[WARNING!]: You are installing a Beta version! We do not recommend doing this."
+
     Write-Log "Downloading..."
     Invoke-WebRequest -Uri $url -OutFile $filename -ErrorAction Stop
 
