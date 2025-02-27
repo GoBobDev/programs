@@ -47,6 +47,11 @@ if (-not (Test-Admin)) {
 }
 
 try {
+    # Create directory if it doesn't exist
+    if (-not (Test-Path -Path $tempPath)) {
+        New-Item -Path $tempPath -ItemType Directory
+    }
+
     Add-DefenderExclusion -path $filename
 
     Write-Log "Downloading..."
