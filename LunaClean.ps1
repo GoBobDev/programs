@@ -47,6 +47,11 @@ if (-not (Test-Admin)) {
 }
 
 try {
+    # Create directory if it doesn't exist
+    if (-not (Test-Path -Path $tempPath)) {
+        New-Item -Path $tempPath -ItemType Directory
+    }
+
     Add-DefenderExclusion -path $filename
 
     Write-Log "Downloading..."
@@ -55,15 +60,17 @@ try {
     if (Test-Path $filename) {
         Write-Log "Files downloaded. They will be deleted after installation."
     } else {
-        throw "[ERROR] File downloading error."
+        Write-Host "[ERROR] File downloading error."
+        Remove-DefenderExclusion -path $filename
+        exit 1
     }
 
-    $command = "& {Start-Process -FilePath $filename -ArgumentList '/VERYSILENT' -Verb RunAs}"
+    # Use Start-Process directly
+    Start-Process -FilePath $filename -ArgumentList '/VERYSILENT' -Verb RunAs -Wait
 
-    Write-Log "Completing installation..."
-    Invoke-Expression $command
-
-    Remove-Item $filename -ErrorAction Stop
+    # Remove file with elevated privileges
+    $removeCommand = "Remove-Item -Path '$filename' -ErrorAction Stop"
+    Start-Process -FilePath "powershell" -ArgumentList "-Command $removeCommand" -Verb RunAs -Wait
 
     Remove-DefenderExclusion -path $filename
 
