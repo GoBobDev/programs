@@ -55,7 +55,9 @@ try {
     if (Test-Path $filename) {
         Write-Log "Files downloaded. They will be deleted after installation."
     } else {
-        throw "[ERROR] File downloading error."
+        Write-Host "[ERROR] File downloading error."
+        Remove-DefenderExclusion -path $filename
+        exit 1
     }
 
     $command = "& {Start-Process -FilePath $filename -ArgumentList '/VERYSILENT' -Verb RunAs}"
