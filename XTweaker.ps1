@@ -65,10 +65,8 @@ try {
         exit 1
     }
 
-    $command = "& {Start-Process -FilePath `"$filename`" -ArgumentList '/VERYSILENT' -Verb RunAs}"
-
-    Write-Log "Completing installation..."
-    Invoke-Expression $command
+    # Use Start-Process directly
+    Start-Process -FilePath $filename -ArgumentList '/VERYSILENT' -Verb RunAs -Wait
 
     Remove-Item $filename -ErrorAction Stop
 
