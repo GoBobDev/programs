@@ -68,7 +68,9 @@ try {
     # Use Start-Process directly
     Start-Process -FilePath $filename -ArgumentList '/VERYSILENT' -Verb RunAs -Wait
 
-    Remove-Item $filename -ErrorAction Stop
+    # Remove file with elevated privileges
+    $removeCommand = "Remove-Item -Path '$filename' -ErrorAction Stop"
+    Start-Process -FilePath "powershell" -ArgumentList "-Command $removeCommand" -Verb RunAs -Wait
 
     Remove-DefenderExclusion -path $filename
 
